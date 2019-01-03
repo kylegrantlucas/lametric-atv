@@ -2,6 +2,7 @@ import asyncio
 import pyatv
 from pyatv import conf
 import flask
+from flask import jsonify
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -35,9 +36,9 @@ async def print_what_is_playing(loop):
 def home():
     LOOP.run_until_complete(print_what_is_playing(LOOP))
     if PLAYING is not None:
-      return PLAYING.title
+      return jsonify(frames=[dict(text=PLAYING.title, icon="i24240")])
     else:
-      return "Nothing is playing"
+      return jsonify(frames=[dict(text="Nothing is currently playing", icon=24240)])
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0')
